@@ -22,6 +22,8 @@
 		D0A57F82192E9CF3008414C0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0A57F61192E9CF3008414C0 /* UIKit.framework */; };
 		D0A57F8A192E9CF3008414C0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D0A57F88192E9CF3008414C0 /* InfoPlist.strings */; };
 		D0A57F8C192E9CF3008414C0 /* photoReorderingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D0A57F8B192E9CF3008414C0 /* photoReorderingTests.m */; };
+		D0A57F9B192EA8C8008414C0 /* CustomedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D0A57F9A192EA8C8008414C0 /* CustomedCell.m */; };
+		D0A57F9E192EB6BF008414C0 /* CellLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = D0A57F9D192EB6BF008414C0 /* CellLayout.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +57,10 @@
 		D0A57F87192E9CF3008414C0 /* photoReorderingTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "photoReorderingTests-Info.plist"; sourceTree = "<group>"; };
 		D0A57F89192E9CF3008414C0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D0A57F8B192E9CF3008414C0 /* photoReorderingTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = photoReorderingTests.m; sourceTree = "<group>"; };
+		D0A57F99192EA8C8008414C0 /* CustomedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomedCell.h; sourceTree = "<group>"; };
+		D0A57F9A192EA8C8008414C0 /* CustomedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomedCell.m; sourceTree = "<group>"; };
+		D0A57F9C192EB6BF008414C0 /* CellLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellLayout.h; sourceTree = "<group>"; };
+		D0A57F9D192EB6BF008414C0 /* CellLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellLayout.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +120,10 @@
 		D0A57F63192E9CF3008414C0 /* photoReordering */ = {
 			isa = PBXGroup;
 			children = (
+				D0A57F9C192EB6BF008414C0 /* CellLayout.h */,
+				D0A57F9D192EB6BF008414C0 /* CellLayout.m */,
+				D0A57F99192EA8C8008414C0 /* CustomedCell.h */,
+				D0A57F9A192EA8C8008414C0 /* CustomedCell.m */,
 				D0A57F6C192E9CF3008414C0 /* AppDelegate.h */,
 				D0A57F6D192E9CF3008414C0 /* AppDelegate.m */,
 				D0A57F6F192E9CF3008414C0 /* Main_iPhone.storyboard */,
@@ -254,7 +264,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				D0A57F77192E9CF3008414C0 /* ViewController.m in Sources */,
+				D0A57F9B192EA8C8008414C0 /* CustomedCell.m in Sources */,
 				D0A57F6E192E9CF3008414C0 /* AppDelegate.m in Sources */,
+				D0A57F9E192EB6BF008414C0 /* CellLayout.m in Sources */,
 				D0A57F6A192E9CF3008414C0 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
