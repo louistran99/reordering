@@ -15,10 +15,10 @@
 
 
 @interface CellLayout () {
-    NSMutableArray *attributes;
-    NSMutableArray *cellCenters;
-    CGPoint _sCellMargin;    // subsequent cell
-    CGPoint _pCellMargin;    // primary cell
+    NSMutableArray *localAttributes;
+//    NSMutableArray *cellCenters;
+//    CGPoint _sCellMargin;    // subsequent cell
+//    CGPoint _pCellMargin;    // primary cell
 }
 @end
 
@@ -29,7 +29,7 @@
     if (self) {
 //        self.itemSize = CGSizeMake(SMALL_CELL_WIDTH, SMALL_CELL_WIDTH);
 //        self.sectionInset = UIEdgeInsetsMake(5, 10, 5, 10);
-        attributes = [[NSMutableArray alloc] init];
+        localAttributes = [NSMutableArray array];
     }
     return self;
 }
@@ -78,55 +78,23 @@
 -(void) prepareLayout {
     [super prepareLayout];
     _cellCount = [self.collectionView numberOfItemsInSection:0];
-//    CGRect screenSize = [[UIScreen mainScreen] bounds];
-    
-
-    
-//    _sCellMargin = CGPointMake(0, 0);
-//    
-//    NSInteger numOfColumns = screenSize.size.width/SMALL_CELL_WIDTH;
-//    NSInteger dXSum = (NSInteger)screenSize.size.width % SMALL_CELL_WIDTH;
-//    CGFloat dX = dXSum/numOfColumns; // horizontal space between cells
-//    CGFloat dY = DY;
-//    
-//    cellCenters = [[NSMutableArray alloc] init];
-
-//    CGPoint Center = CGPointMake(0.0f, 0.0f);
-    
     
     UICollectionViewLayoutAttributes *attribute = [self setUpMainCellLayout:CGSizeMake(LARGE_CELL_WIDTH, LARGE_CELL_WIDTH)];
-    [attributes addObject:attribute];
+    [localAttributes addObject:attribute];
     
     NSArray *secondaryAttributes = [self setUpSecondaryCellLayouts:CGSizeMake(SMALL_CELL_WIDTH, SMALL_CELL_WIDTH)];
-    [attributes addObjectsFromArray:secondaryAttributes];
-    
-//    NSInteger secondaryCellIndex = 1;
-//    for (NSInteger index=0; index < _cellCount-secondaryCellIndex; index++) {
-//        NSInteger col = (index)%numOfColumns;
-//        CGFloat x = (1+2*col)*SMALL_CELL_WIDTH/2 + (1+2*col)*dX;
-//        NSInteger row = index/numOfColumns;
-//        CGFloat y = LARGE_CELL_WIDTH + 2*dY + (1+2*row)*dY;
-//        attribute.size = CGSizeMake(SMALL_CELL_WIDTH, SMALL_CELL_WIDTH);
-//        attribute.center = CGPointMake(x, y);
-//        [attributes addObject:attribute];
-//    }
-//    
-//    
-//    _sCellMargin.x = 0;
-//    _sCellMargin.y = 0.0f;
-//    _pCellMargin.x = (screenSize.size.width - LARGE_CELL_WIDTH)/2;
-//    _pCellMargin.y = DY;
+    [localAttributes addObjectsFromArray:secondaryAttributes];
     
 }
 
 // we only handle vertical scrolling for now...  we'll need generalize this method to handle horizontal scrolling
 -(NSArray*) setUpSecondaryCellLayouts: (CGSize) size {
-    NSMutableArray *attributesToReturn = [[NSMutableArray alloc] init];
+    NSMutableArray *attributesToReturn = [NSMutableArray array];
     CGRect screenSize = [[UIScreen mainScreen] bounds];
     NSInteger numberOfColumns = screenSize.size.width / size.width;
     NSInteger dxSum = (NSInteger) screenSize.size.width % (NSInteger) size.width;
     CGFloat horizontalSpacing = dxSum/(2*numberOfColumns);
-    UICollectionViewLayoutAttributes *attribute;
+    UICollectionViewLayoutAttributes *attribute = [[UICollectionViewLayoutAttributes alloc] init];
     
     for (NSInteger index=0; index < _cellCount; index++) {
         NSInteger col = (index)%numberOfColumns;
@@ -142,39 +110,38 @@
 }
 
 -(UICollectionViewLayoutAttributes *) setUpMainCellLayout:(CGSize) size {
-    UICollectionViewLayoutAttributes *attribute;
+    UICollectionViewLayoutAttributes *attribute = [[UICollectionViewLayoutAttributes alloc] init];
     attribute.size = size;
-
     CGPoint center = CGPointMake(0, 0);
     CGRect screenSize = [[UIScreen mainScreen] bounds];
-    center.x = (screenSize.size.width - size.width)/2;
-    center.y = (screenSize.size.height - size.height)/2;
+    center.x = (screenSize.size.width - size.width)/2 + size.width;
+    center.y = center.x;
     attribute.center = center;
-    
     return attribute;
 }
 
 
 -(UICollectionViewLayoutAttributes *) layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewLayoutAttributes *attributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
-    if (indexPath.section==0 && indexPath.item==0) {
-        attributes.size = CGSizeMake(LARGE_CELL_WIDTH, LARGE_CELL_WIDTH);
-        attributes.center = CGPointMake(LARGE_CELL_WIDTH/2 + _pCellMargin.x,
-                                        LARGE_CELL_WIDTH/2 + _pCellMargin.y);
-    } else {
-        attributes.size = CGSizeMake(SMALL_CELL_WIDTH, SMALL_CELL_WIDTH);
-        CGPoint cellCenter = CGPointMake(0, 0);
-        cellCenter.x = (SMALL_CELL_WIDTH+DX)/2 + (indexPath.item-1)*(SMALL_CELL_WIDTH+DX);
-        NSInteger columns = (int)self.collectionView.frame.size.width / SMALL_CELL_WIDTH;
-        CGFloat dx = (self.collectionView.frame.size.width - columns*SMALL_CELL_WIDTH)/columns;
-        
-        
-        NSInteger row = (NSInteger)(cellCenter.x/self.collectionView.frame.size.width);
-        cellCenter.y = LARGE_CELL_WIDTH + (SMALL_CELL_WIDTH+DX)/2 + row*(SMALL_CELL_WIDTH+DX);
-        cellCenter.x = (int)cellCenter.x % (int)self.collectionView.frame.size.width;
-        attributes.center = cellCenter;
-    }
+//    if (indexPath.section==0 && indexPath.item==0) {
+//        attributes.size = CGSizeMake(LARGE_CELL_WIDTH, LARGE_CELL_WIDTH);
+//        attributes.center = CGPointMake(LARGE_CELL_WIDTH/2 + _pCellMargin.x,
+//                                        LARGE_CELL_WIDTH/2 + _pCellMargin.y);
+//    } else {
+//        attributes.size = CGSizeMake(SMALL_CELL_WIDTH, SMALL_CELL_WIDTH);
+//        CGPoint cellCenter = CGPointMake(0, 0);
+//        cellCenter.x = (SMALL_CELL_WIDTH+DX)/2 + (indexPath.item-1)*(SMALL_CELL_WIDTH+DX);
+//        NSInteger columns = (int)self.collectionView.frame.size.width / SMALL_CELL_WIDTH;
+//        CGFloat dx = (self.collectionView.frame.size.width - columns*SMALL_CELL_WIDTH)/columns;
+//        
+//        
+//        NSInteger row = (NSInteger)(cellCenter.x/self.collectionView.frame.size.width);
+//        cellCenter.y = LARGE_CELL_WIDTH + (SMALL_CELL_WIDTH+DX)/2 + row*(SMALL_CELL_WIDTH+DX);
+//        cellCenter.x = (int)cellCenter.x % (int)self.collectionView.frame.size.width;
+//        attributes.center = cellCenter;
+//    }
     return attributes;
+    
 }
 
 @end
