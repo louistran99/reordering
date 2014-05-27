@@ -13,6 +13,13 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    
+    
+    // status bar update
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) {
+        [[UINavigationBar appearance] setBarTintColor:[UIColor grayColor]];
+    }
+    
     return YES;
 }
 							

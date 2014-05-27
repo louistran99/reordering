@@ -27,6 +27,8 @@ static NSString *collectionCellID = @"cellColor";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self setNeedsStatusBarAppearanceUpdate];
+    
 	// Do any additional setup after loading the view, typically from a nib.
     [self createRandomizedColors];
 
@@ -41,6 +43,13 @@ static NSString *collectionCellID = @"cellColor";
     
 }
 
+
+-(UIStatusBarStyle) preferredStatusBarStyle {
+    return UIStatusBarStyleDefault;
+    //    return UIStatusBarStyleLightContent;
+
+}
+
 -(void) handleLongPress:(UILongPressGestureRecognizer*) sender {
     CGPoint touchLocation = [sender locationInView:self.containerView];
     NSIndexPath *indexPath = [self.containerView indexPathForItemAtPoint:touchLocation];
@@ -53,14 +62,12 @@ static NSString *collectionCellID = @"cellColor";
             [layout setCellCenter:cell.center];
             [layout setScale:1.2f];
         } completion:nil];
-        
     } else if (sender.state == UIGestureRecognizerStateEnded) {
         [self.containerView performBatchUpdates:^{
             [layout setLongPressedCell:indexPath];
             [layout setCellCenter:cell.center];
             [layout setScale:1.0f];
         } completion:nil];
-    
     }
 }
 
@@ -88,7 +95,7 @@ static NSString *collectionCellID = @"cellColor";
 
 #pragma mark Create Data
 -(void) createRandomizedColors {
-    NSInteger numberOfCells = 3;
+    NSInteger numberOfCells = 18;
     arrayOfColors = [[NSMutableArray alloc] init];
     for (int i = 0; i<numberOfCells; i++) {
         CGFloat r = (float)(rand()%256)/256;

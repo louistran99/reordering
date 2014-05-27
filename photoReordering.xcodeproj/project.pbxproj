@@ -406,6 +406,7 @@
 				GCC_PREFIX_HEADER = "photoReordering/photoReordering-Prefix.pch";
 				INFOPLIST_FILE = "photoReordering/photoReordering-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -419,6 +420,7 @@
 				GCC_PREFIX_HEADER = "photoReordering/photoReordering-Prefix.pch";
 				INFOPLIST_FILE = "photoReordering/photoReordering-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -482,6 +484,7 @@
 				D0A57F91192E9CF3008414C0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D0A57F92192E9CF3008414C0 /* Build configuration list for PBXNativeTarget "photoReorderingTests" */ = {
 			isa = XCConfigurationList;
@@ -490,6 +493,7 @@
 				D0A57F94192E9CF3008414C0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
