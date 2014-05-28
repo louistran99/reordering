@@ -95,7 +95,7 @@ static NSString *collectionCellID = @"cellColor";
 
 #pragma mark Create Data
 -(void) createRandomizedColors {
-    NSInteger numberOfCells = 18;
+    NSInteger numberOfCells = 6;
     arrayOfColors = [[NSMutableArray alloc] init];
     for (int i = 0; i<numberOfCells; i++) {
         CGFloat r = (float)(rand()%256)/256;

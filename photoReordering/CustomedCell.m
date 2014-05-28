@@ -35,10 +35,10 @@
         self.backgroundView = backgroundView;
         
         // highlighted background
-        UIView *selectedView = [[UIView alloc] init];
-        selectedView.backgroundColor = [UIColor orangeColor];
-        [selectedView.layer setCornerRadius:2.0f];
-        self.selectedBackgroundView = selectedView;
+//        UIView *selectedView = [[UIView alloc] init];
+//        selectedView.backgroundColor = [UIColor orangeColor];
+//        [selectedView.layer setCornerRadius:2.0f];
+//        self.selectedBackgroundView = selectedView;
     }
     return self;
 }
