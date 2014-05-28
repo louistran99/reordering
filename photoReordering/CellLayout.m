@@ -131,16 +131,25 @@
     NSInteger numberOfColumns = screenSize.size.width / size.width;
     NSInteger dxSum = (NSInteger) screenSize.size.width / (NSInteger) size.width;
     CGFloat horizontalSpacing = dxSum/(2*numberOfColumns);
+    NSInteger col = index.item % numberOfColumns;
+    NSInteger row = 0;
     
+    
+    CGFloat yOffset = 0;
     NSIndexPath *mainCellIndex = [NSIndexPath indexPathForItem:0 inSection:0];
     UICollectionViewLayoutAttributes *mainCellLayout = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:mainCellIndex];
     if (CGSizeEqualToSize(size, mainCellLayout.frame.size)) {
-    
+        ;// we don't have the main cell
     } else {
-    
+        ; // we have the main cell
+        col--;
+        row;
+        yOffset = mainCellLayout.frame.size.height;
     }
-    
-    
+    CGFloat x = (1+2*col)*size.width/2 + (1+2*col)*horizontalSpacing;
+    CGFloat y = (1+2*row)*size.height/2 + (1+2*row)*horizontalSpacing + yOffset;
+    attribute.center = CGPointMake(x, y);
+    attribute.size = size;
     return attribute;
 }
 
