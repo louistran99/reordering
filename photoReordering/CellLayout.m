@@ -8,7 +8,7 @@
 
 #import "CellLayout.h"
 
-#define LARGE_CELL_WIDTH 260
+#define LARGE_CELL_WIDTH 100
 #define SMALL_CELL_WIDTH 100
 #define DX 10
 #define DY 10
@@ -81,69 +81,63 @@
     
 //    [localAttributes addObject:[self setUpMainCellLayout:CGSizeMake(LARGE_CELL_WIDTH, LARGE_CELL_WIDTH)]];
     
-    NSArray *secondaryAttributes = [self setUpSecondaryCellLayouts:CGSizeMake(SMALL_CELL_WIDTH, SMALL_CELL_WIDTH)];
-    [localAttributes addObjectsFromArray:secondaryAttributes];
+//    NSArray *secondaryAttributes = [self setUpSecondaryCellLayouts:CGSizeMake(SMALL_CELL_WIDTH, SMALL_CELL_WIDTH)];
+//    [localAttributes addObjectsFromArray:secondaryAttributes];
     
 }
 
 // we only handle vertical scrolling for now...  we'll need generalize this method to handle horizontal scrolling
--(NSArray*) setUpSecondaryCellLayouts: (CGSize) size {
-    
-    NSMutableArray *attributesToReturn = [[NSMutableArray alloc] init];
-//    UICollectionViewLayoutAttributes *mainCellLayout = [self setUpMainCellLayout:CGSizeMake(LARGE_CELL_WIDTH, LARGE_CELL_WIDTH)];
-    
-    CGRect screenSize = [[UIScreen mainScreen] bounds];
-    NSInteger numberOfColumns = screenSize.size.width / size.width;
-    NSInteger dxSum = (NSInteger) screenSize.size.width % (NSInteger) size.width;
-    CGFloat horizontalSpacing = dxSum/(2*numberOfColumns);
-    
-//    CGFloat yOffset = mainCellLayout.frame.size.height;
-//    if (CGSizeEqualToSize(size,mainCellLayout.frame.size)) {
-//         ;// we don't have a main cell
-//        yOffset = 0.0f;
-//    } else {
-//        ;// we have a main cell
-//        yOffset = mainCellLayout.frame.size.height;
-////        [attributesToReturn addObject:mainCellLayout];
+//-(NSArray*) setUpSecondaryCellLayouts: (CGSize) size {
+//    
+//    NSMutableArray *attributesToReturn = [[NSMutableArray alloc] init];
+////    UICollectionViewLayoutAttributes *mainCellLayout = [self setUpMainCellLayout:CGSizeMake(LARGE_CELL_WIDTH, LARGE_CELL_WIDTH)];
+//    
+//    CGRect screenSize = [[UIScreen mainScreen] bounds];
+//    NSInteger numberOfColumns = screenSize.size.width / size.width;
+//    NSInteger dxSum = (NSInteger) screenSize.size.width % (NSInteger) size.width;
+//    CGFloat horizontalSpacing = dxSum/(2*numberOfColumns);
+//    
+////    CGFloat yOffset = mainCellLayout.frame.size.height;
+////    if (CGSizeEqualToSize(size,mainCellLayout.frame.size)) {
+////         ;// we don't have a main cell
+////        yOffset = 0.0f;
+////    } else {
+////        ;// we have a main cell
+////        yOffset = mainCellLayout.frame.size.height;
+//////        [attributesToReturn addObject:mainCellLayout];
+////    }
+//
+//    for (NSInteger index=0; index < _cellCount; index++) {
+//        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
+//        UICollectionViewLayoutAttributes *attribute = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
+//        NSInteger col = (index)%numberOfColumns;
+//        NSInteger row = index/numberOfColumns;
+//        CGFloat x = (1+2*col)*size.width/2 + (1+2*col)*horizontalSpacing;
+//        CGFloat y = (1+2*row)*size.height/2 + (1+2*row)*horizontalSpacing + 320;
+//        attribute.center = CGPointMake(x, y);
+//        attribute.size = CGSizeMake(size.width, size.height);
+//        [attributesToReturn addObject:attribute];
 //    }
-
-    
-    for (NSInteger index=0; index < _cellCount; index++) {
-        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
-        UICollectionViewLayoutAttributes *attribute = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
-        NSInteger col = (index)%numberOfColumns;
-        NSInteger row = index/numberOfColumns;
-        CGFloat x = (1+2*col)*size.width/2 + (1+2*col)*horizontalSpacing;
-        CGFloat y = (1+2*row)*size.height/2 + (1+2*row)*horizontalSpacing + 320;
-        attribute.center = CGPointMake(x, y);
-        attribute.size = CGSizeMake(size.width, size.height);
-        [attributesToReturn addObject:attribute];
-    }
-    return attributesToReturn;
-}
+//    return attributesToReturn;
+//}
 
 
 -(UICollectionViewLayoutAttributes *) setUpSecondaryCell: (CGSize) size atIndexPath:(NSIndexPath*) index {
     UICollectionViewLayoutAttributes *attribute = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:index];
 
-    
     CGRect screenSize = [[UIScreen mainScreen] bounds];
     NSInteger numberOfColumns = screenSize.size.width / size.width;
     NSInteger dxSum = (NSInteger) screenSize.size.width / (NSInteger) size.width;
     CGFloat horizontalSpacing = dxSum/(2*numberOfColumns);
     NSInteger col = index.item % numberOfColumns;
-    NSInteger row = 0;
-    
+    NSInteger row = index.item / numberOfColumns;
     
     CGFloat yOffset = 0;
-    NSIndexPath *mainCellIndex = [NSIndexPath indexPathForItem:0 inSection:0];
-    UICollectionViewLayoutAttributes *mainCellLayout = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:mainCellIndex];
-    if (CGSizeEqualToSize(size, mainCellLayout.frame.size)) {
-        ;// we don't have the main cell
-    } else {
-        ; // we have the main cell
-        col--;
-        row;
+//    NSIndexPath *mainCellIndex = [NSIndexPath indexPathForItem:0 inSection:0];
+    UICollectionViewLayoutAttributes *mainCellLayout = [self setUpMainCellLayout:CGSizeMake(LARGE_CELL_WIDTH, LARGE_CELL_WIDTH)];
+    if (!CGSizeEqualToSize(size, mainCellLayout.frame.size)) {
+        col = (index.item-1) % numberOfColumns; // we have a main cell
+        row = (index.item-1) / numberOfColumns + 1;
         yOffset = mainCellLayout.frame.size.height;
     }
     CGFloat x = (1+2*col)*size.width/2 + (1+2*col)*horizontalSpacing;
@@ -154,7 +148,6 @@
 }
 
 -(UICollectionViewLayoutAttributes *) setUpMainCellLayout:(CGSize) size {
-//    UICollectionViewLayoutAttributes *attribute = [[UICollectionViewLayoutAttributes alloc] init];
     
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
     UICollectionViewLayoutAttributes *attribute = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
@@ -171,17 +164,14 @@
 
 -(UICollectionViewLayoutAttributes *) layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath {
     
-    UICollectionViewLayoutAttributes *attributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
-
-    
+    UICollectionViewLayoutAttributes *attributes;// = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
     if (indexPath.section==0 && indexPath.item==0) {
         attributes = [self setUpMainCellLayout:CGSizeMake(LARGE_CELL_WIDTH, LARGE_CELL_WIDTH)];
 //        attributes = [localAttributes objectAtIndex:indexPath.item];
     } else {
-        attributes = [localAttributes objectAtIndex:indexPath.item];
-    
+//        attributes = [localAttributes objectAtIndex:indexPath.item];
+        attributes = [self setUpSecondaryCell:CGSizeMake(SMALL_CELL_WIDTH, SMALL_CELL_WIDTH) atIndexPath:indexPath];
     }
-    
     return attributes;
     
 }
