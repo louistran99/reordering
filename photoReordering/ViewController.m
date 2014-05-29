@@ -14,8 +14,10 @@ static NSString *collectionCellID = @"cellColor";
 
 @interface ViewController () <UICollectionViewDataSource, UICollectionViewDelegate> {
     NSMutableArray *arrayOfColors;
-
 }
+
+@property (nonatomic) UILongPressGestureRecognizer *longPress;
+@property (nonatomic) UIPanGestureRecognizer *panGesture;
 
 @end
 
@@ -37,9 +39,25 @@ static NSString *collectionCellID = @"cellColor";
     [self.containerView setCollectionViewLayout:[[CellLayout alloc] init]];
     
     // register to handle gestures
-    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
-    [longPress setNumberOfTouchesRequired:1];
-    [self.containerView addGestureRecognizer:longPress];
+    _longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+    [_longPress setNumberOfTouchesRequired:1];
+    self.longPress.delegate = self;
+    [self.containerView addGestureRecognizer:_longPress];
+
+    for (UIGestureRecognizer *gestureRecognizer in self.containerView.gestureRecognizers) {
+        if ([gestureRecognizer isKindOfClass:[UILongPressGestureRecognizer class]]) {
+            [gestureRecognizer requireGestureRecognizerToFail:_longPress];
+        }
+    }
+    
+    _panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanning:)];
+    [_panGesture setMaximumNumberOfTouches:1];
+    [_panGesture setMinimumNumberOfTouches:1];
+    [_panGesture setDelegate:self];
+    [self.containerView addGestureRecognizer:_panGesture];
+    
+
+    
     
 }
 
@@ -50,12 +68,27 @@ static NSString *collectionCellID = @"cellColor";
 
 }
 
+-(void) handlePanning:(UIPanGestureRecognizer*) sender {
+    switch (sender.state) {
+        case UIGestureRecognizerStateChanged: {
+            CGPoint panningPoint = [sender translationInView:self.containerView];
+            NSLog(@"x:%1.1f\t y:%1.1f",panningPoint.x,panningPoint.y);
+        
+        }
+            break;
+            
+        default:
+            break;
+    }
+
+}
+
 -(void) handleLongPress:(UILongPressGestureRecognizer*) sender {
     CGPoint touchLocation = [sender locationInView:self.containerView];
     NSIndexPath *indexPath = [self.containerView indexPathForItemAtPoint:touchLocation];
     CustomedCell *cell = (CustomedCell*)[self.containerView cellForItemAtIndexPath:indexPath];
     CellLayout *layout = (CellLayout*)self.containerView.collectionViewLayout;
-
+    
     if (sender.state == UIGestureRecognizerStateBegan) {
         [self.containerView performBatchUpdates:^{
             [layout setLongPressedCell:indexPath];
@@ -76,6 +109,37 @@ static NSString *collectionCellID = @"cellColor";
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+#pragma mark UIGestureRecognizerDelegate 
+//- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+//
+//    return NO;
+//}
+
+//- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+//    if ([self.longPress isEqual:gestureRecognizer]) {
+//        return [self.panGesture isEqual:otherGestureRecognizer];
+//    }
+//    
+//    if ([self.panGesture isEqual:gestureRecognizer]) {
+//        return [self.longPress isEqual:otherGestureRecognizer];
+//    }
+//    
+//    return NO;
+//}
+
+-(BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    if ([_longPress isEqual:gestureRecognizer]) {
+        return [_panGesture isEqual:otherGestureRecognizer];
+    }
+    
+    if ([_panGesture isEqual:gestureRecognizer]) {
+        return [_longPress isEqual:otherGestureRecognizer];
+    }
+    return NO;
+}
+
+
 
 #pragma mark UICollectionViewDelegate
 -(UICollectionViewCell*) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
